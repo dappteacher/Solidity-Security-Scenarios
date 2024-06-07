@@ -11,7 +11,7 @@ contract Victim {
     function withdraw() public {
         uint256 amount = balances[msg.sender];
         require(amount > 0, "Insufficient balance");
-        // We can assign zero for balances of the caller to prevent this attack in a simple way.
+        // We can move this assigning line to prevent this attack in a simple way.
         balances[msg.sender] = 0;
 
         (bool sent, ) = msg.sender.call{value: amount}("");
