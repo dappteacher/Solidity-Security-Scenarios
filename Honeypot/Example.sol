@@ -1,9 +1,6 @@
-/**
- * @author Yaghoub Adelzadeh
- * @notice Developed by Yaghoub Adelzadeh. For more information, visit: https://github.com/dappteacher
- */
-
 // SPDX-License-Identifier: MIT
+// Author: Yaghoub Adelzadeh
+// GitHub: https://www.github.com/dappteacher
 pragma solidity ^0.8.24;
 
 /**
