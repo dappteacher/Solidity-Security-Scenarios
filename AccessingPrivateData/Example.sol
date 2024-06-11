@@ -18,50 +18,50 @@ Contract deployed on Goerli: 0x534E4Ce0ffF779513793cfd70308AF195827BD31
 
 contract Vault {
     // slot 0
-    uint256 public count = 123;
+    uint256 public itemCount = 123;
 
     // slot 1
-    address public owner = msg.sender;
-    bool public isTrue = true;
-    uint16 public u16 = 31;
+    address public contractOwner = msg.sender;
+    bool public statusFlag = true;
+    uint16 public shortNumber = 31;
 
     // slot 2
-    bytes32 private password;
+    bytes32 private secretKey;
 
     // Constants do not use storage slots
-    uint256 public constant someConst = 123;
+    uint256 public constant fixedValue = 123;
 
     // slot 3, 4, 5 (one for each array element)
-    bytes32[3] public data;
+    bytes32[3] public records;
 
-    struct User {
-        uint256 id;
-        bytes32 password;
+    struct Member {
+        uint256 memberId;
+        bytes32 memberPassword;
     }
 
     // slot 6 - array length
     // Array elements stored starting from keccak256(slot)
-    User[] private users;
+    Member[] private members;
 
     // slot 7 - empty
     // Mapping entries stored at keccak256(key, slot)
-    mapping(uint256 => User) private idToUser;
+    mapping(uint256 => Member) private idToMember;
 
-    // Constructor to initialize the contract with a password
-    constructor(bytes32 _password) {
-        password = _password;
+    // Constructor to initialize the contract with a secret key
+    constructor(bytes32 _secretKey) {
+        secretKey = _secretKey;
     }
 
-    // Function to add a new user with a given password
-    function addUser(bytes32 _password) public {
-        User memory user = User({id: users.length, password: _password});
+    // Function to add a new member with a given password
+    function registerMember(bytes32 _memberPassword) public {
+        Member memory newMember = Member({memberId: members.length, memberPassword: _memberPassword});
 
-        users.push(user);
-        idToUser[user.id] = user;
+        members.push(newMember);
+        idToMember[newMember.memberId] = newMember;
     }
 
     // Function to calculate the storage location of an array element
-    function getArrayLocation(uint256 slot, uint256 index, uint256 elementSize)
+    function calculateArrayLocation(uint256 slot, uint256 index, uint256 elementSize)
         public
         pure
         returns (uint256)
@@ -71,7 +71,7 @@ contract Vault {
     }
 
     // Function to calculate the storage location of a mapping entry
-    function getMapLocation(uint256 slot, uint256 key)
+    function calculateMappingLocation(uint256 slot, uint256 key)
         public
         pure
         returns (uint256)
@@ -82,38 +82,38 @@ contract Vault {
 
 /*
 Storage Layout and Retrieval:
-- slot 0: count
+- slot 0: itemCount
 web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", 0, console.log)
 
-- slot 1: u16, isTrue, owner
+- slot 1: shortNumber, statusFlag, contractOwner
 web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", 1, console.log)
 
-- slot 2: password
+- slot 2: secretKey
 web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", 2, console.log)
 
 - slot 6: array length
-getArrayLocation(6, 0, 2)
+calculateArrayLocation(6, 0, 2)
 web3.utils.numberToHex("111414077815863400510004064629973595961579173665589224203503662149373724986687")
 We can also use web3 to get the data location:
 web3.utils.soliditySha3({ type: "uint", value: 6 })
 
-First user:
+First member:
 web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xf652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f", console.log)
 web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xf652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d40", console.log)
 
 Note: use web3.toAscii to convert bytes32 to readable text
 
-Second user:
+Second member:
 web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xf652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d41", console.log)
 web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xf652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d42", console.log)
 
 - slot 7: empty
-getMapLocation(7, 1)
+calculateMappingLocation(7, 1)
 web3.utils.numberToHex("81222191986226809103279119994707868322855741819905904417953092666699096963112")
 We can also use web3 to get the data location:
 web3.utils.soliditySha3({ type: "uint", value: 1 }, { type: "uint", value: 7 })
 
-User 1:
+Member 1:
 web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xb39221ace053465ec3453ce2b36430bd138b997ecea25c1043da0c366812b828", console.log)
 web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xb39221ace053465ec3453ce2b36430bd138b997ecea25c1043da0c366812b829", console.log)
 */
