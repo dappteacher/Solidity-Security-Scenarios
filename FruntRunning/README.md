@@ -9,32 +9,10 @@ This repository contains two Solidity contracts demonstrating different security
 The `GuessTheHash` contract is a guessing game where players can win 10 Ether by finding the correct string 
 that hashes to the target hash. This contract demonstrates the vulnerability of front-running attacks in Ethereum transactions.
 
-### How it Works
-
-1. Alex deploys the `GuessTheHash` contract with 10 Ether.
-2. Jacob discovers the correct string that hashes to the target hash ("Ethereum").
-3. Jacob submits the solution by calling the `solve` function with "Ethereum" and sets a gas price of 15 gwei.
-4. Mary monitors the transaction pool and sees Jacob's transaction.
-5. Mary submits the same solution by calling `solve` with "Ethereum" and sets a higher gas price (100 gwei).
-6. Due to the higher gas price, Mary's transaction is mined before Jacob's, and she wins the 10 Ether reward.
 
 ## SecureHashGame
 
 The `SecureHashGame` contract demonstrates how to guard against front-running attacks using the commit-reveal scheme.
-
-### How it Works
-
-1. Alex deploys the `SecureHashGame` contract with 10 Ether.
-2. Jacob discovers the correct string that hashes to the target hash ("Ethereum").
-3. Jacob calculates the keccak256 hash of (address in lowercase + solution + secret).
-4. Jacob commits the solution by calling `commitSolution` with the hash.
-5. Mary monitors the transaction pool and sees Jacob's commit.
-6. Mary submits the same commit with a higher gas price.
-7. Mary's commit transaction is mined first, but she has not won the reward yet. She needs to call `revealSolution` with the correct solution and secret.
-8. Jacob calls `revealSolution` with "Ethereum" and his secret.
-9. Mary, monitoring the transaction pool, sees Jacob's reveal transaction and submits the same with a higher gas price.
-10. Even if Mary's reveal transaction is mined first, it will revert because the `revealSolution` function checks the hash using keccak256(msg.sender + solution + secret).
-11. Jacob's `revealSolution` passes the hash check, and he receives the 10 Ether reward.
 
 ## Getting Started
 
