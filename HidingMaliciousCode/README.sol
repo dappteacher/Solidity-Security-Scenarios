@@ -1,7 +1,3 @@
-Here is a detailed README file for the "HidingMaliciousCode" folder in your "Solidity-Security-Scenarios" repository:
-
----
-
 # Hiding Malicious Code in Solidity Contracts
 
 This folder contains two examples of how malicious code can be hidden in Solidity smart contracts, demonstrating potential security vulnerabilities and how they can be exploited.
