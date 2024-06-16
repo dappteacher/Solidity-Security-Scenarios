@@ -1,4 +1,3 @@
-```markdown
 # Honeypot Attack Demonstration
 
 This folder contains Solidity smart contracts demonstrating a honeypot attack and the reentrancy vulnerability in Ethereum smart contracts.
@@ -54,4 +53,3 @@ This contract serves as a trap for attackers by reverting transactions with spec
 ## License
 
 These contracts are licensed under the MIT License.
-```
