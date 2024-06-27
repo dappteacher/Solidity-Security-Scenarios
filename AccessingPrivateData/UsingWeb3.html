@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>PD_Accessing</title>
+
+  <meta name="author" content="Yaghoub Adelzadeh">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.6/web3.min.js"></script>
+  <script>
+    /**
+     * @notice Initialize Web3
+     * If Web3 is injected by the browser (Mist/MetaMask), use the provider.
+     * Else, connect to a local instance running on port 8545.
+     */
+    if (typeof web3 !== 'undefined') {
+      web3 = new Web3(web3.currentProvider);
+    } else {
+      web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    }
+
+    /**
+     * @notice The address of the deployed PD_Accessing contract
+     * @dev Replace with your contract's address
+     */
+    var contractAddress = '0xB62dFEbA6643Af0146bF54f0A7C2076998a7787e';
+    
+    /**
+     * @notice Reads storage slots from the contract
+     * @dev Retrieves values of the storage slots and logs them to the console
+     */
+    async function readStorageSlots() {
+        const slot0 = await web3.eth.getStorageAt(contractAddress, 0);  // bigNumber
+        const slot1 = await web3.eth.getStorageAt(contractAddress, 1);  // pass
+        const slot2 = await web3.eth.getStorageAt(contractAddress, 2);  // flag and shorterNumber
+        const slot3 = await web3.eth.getStorageAt(contractAddress, 3);  // operator[0]
+        const slot4 = await web3.eth.getStorageAt(contractAddress, 4);  // operator[1]
+
+        console.log('Big Number is: ', web3.utils.hexToNumberString(slot0));
+        console.log('Password is: ', web3.utils.hexToString(slot1));
+        console.log('Flag is: ', parseInt(slot2.slice(-2), 16) === 1); // last byte
+        console.log('Shorter Number is: ', parseInt(slot2.slice(-6, -2), 16)); // 2 bytes before the last
+        console.log('First Operator is: ', slot3);
+        console.log('Second Operator is: ', slot4);
+    }
+
+  </script>
+</head>
+
+<body>
+  
+  <div class="container">
+    <button onclick="readStorageSlots()">Read Storage</button>
+  </div>
+
+</body>
+</html>
