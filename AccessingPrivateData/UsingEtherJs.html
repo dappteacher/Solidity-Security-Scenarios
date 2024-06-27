@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>PD_Accessing</title>
+  <meta name="author" content="Yaghoub Adelzadeh">
+
+  <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+  <script>
+    /**
+     * @notice The address of the deployed PD_Accessing contract
+     * @dev Replace with your contract's address
+     */
+    var contractAddress = '0xB62dFEbA6643Af0146bF54f0A7C2076998a7787e';
+
+    /**
+     * @notice Initialize ethers.js provider
+     * @dev Connect to a local instance running on port 8545
+     */
+    const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
+
+    /**
+     * @notice Reads storage slots from the contract
+     * @dev Retrieves values of the storage slots and logs them to the console
+     */
+    async function readStorageSlots() {
+      const bigNumberHex = await provider.getStorageAt(contractAddress, 0);
+      const passHex = await provider.getStorageAt(contractAddress, 1);
+      const flagAndNumberHex = await provider.getStorageAt(contractAddress, 2);
+      const firstOperator = await provider.getStorageAt(contractAddress, 3);
+      const secondOperator = await provider.getStorageAt(contractAddress, 4);
+
+      // Convert the hex values to the appropriate types
+      const bigNumber = ethers.BigNumber.from(bigNumberHex);
+      const pass = ethers.utils.parseBytes32String(passHex);
+
+      // Extract flag and shortNumber from the same slot
+      const flag = parseInt(flagAndNumberHex.slice(-2), 16) === 1; // last byte
+      const shortNumber = parseInt(flagAndNumberHex.slice(-6, -2), 16); // 2 bytes before the last
+
+      console.log("Big Number is: ", bigNumber.toString());
+      console.log("Pass is: ", pass);
+      console.log("Flag is: ", flag);
+      console.log("Short Number is: ", shortNumber);
+      console.log("First Operator is: ", firstOperator);
+      console.log("Second Operator is: ", secondOperator);
+    }
+  </script>
+</head>
+
+<body>
+  <div>
+    <button onclick="readStorageSlots()">Read Storage</button>
+  </div>
+</body>
+</html>
