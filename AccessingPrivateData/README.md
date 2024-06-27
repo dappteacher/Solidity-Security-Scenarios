@@ -1,81 +1,55 @@
-# Attack Example: Bypassing Contract Check in Solidity
+# PD_Accessing
 
-This folder contains an example of a smart contract designed to demonstrate a storage layout and security implications in Solidity. It includes how contracts can store and access data in storage slots and how this can be exploited.
+## Overview
+This repository contains examples and demonstrations related to accessing and interpreting storage slots in a Solidity smart contract. The examples are designed to help understand how data is stored in Ethereum smart contracts and how to retrieve and manipulate this data using Web3.js and Ethers.js.
 
-## Contracts Overview
+## Contents
 
-### Vault Contract
+### Smart Contracts
+The repository includes a Solidity smart contract named `PD_Accessing.sol`, which demonstrates the allocation of storage slots in Solidity. The contract initializes several state variables and provides a constructor for setting their values.
 
-The `Vault` contract illustrates:
-- Storage slot allocation and usage.
-- Functionality to register members with passwords.
-- Utility functions to calculate storage locations for array elements and mapping entries.
+### Web Pages
+Two web pages demonstrate how to interact with the `PD_Accessing` smart contract using different JavaScript libraries:
 
-## Storage Layout and Retrieval
+1. **UsingWeb3.html**
+   - Demonstrates how to use Web3.js to read storage slots from the `PD_Accessing` contract.
+   - Initializes Web3 and connects to a local Ethereum node.
+   - Reads and interprets the values stored in different storage slots and logs them to the console.
 
-The `Vault` contract uses specific storage slots for different variables. Here is a detailed guide on accessing the storage layout:
+2. **UsingEtherJs.html**
+   - Demonstrates how to use Ethers.js to read storage slots from the `PD_Accessing` contract.
+   - Initializes Ethers.js and connects to a local Ethereum node.
+   - Reads and interprets the values stored in different storage slots and logs them to the console.
 
-- **Slot 0: `itemCount`**
-  ```javascript
-  web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", 0, console.log)
-  ```
+## Getting Started
 
-- **Slot 1: `shortNumber`, `statusFlag`, `contractOwner`**
-  ```javascript
-  web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", 1, console.log)
-  ```
+### Prerequisites
+- Node.js
+- An Ethereum node running locally (e.g., Ganache, Geth)
 
-- **Slot 2: `secretKey`**
-  ```javascript
-  web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", 2, console.log)
-  ```
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dappteacher/your-repository-name.git
+   cd your-repository-name
+   ```
 
-- **Slot 6: Array length**
-  ```javascript
-  calculateArrayLocation(6, 0, 2)
-  web3.utils.numberToHex("111414077815863400510004064629973595961579173665589224203503662149373724986687")
-  web3.utils.soliditySha3({ type: "uint", value: 6 })
-  ```
+2. Deploy the `PD_Accessing` smart contract to your local Ethereum node. Make sure to note the deployed contract address.
 
-- **First member:**
-  ```javascript
-  web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xf652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f", console.log)
-  web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xf652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d40", console.log)
-  ```
+3. Update the contract address in the JavaScript files of both `UsingWeb3.html` and `UsingEtherJs.html`:
+   ```javascript
+   var contractAddress = 'YOUR_DEPLOYED_CONTRACT_ADDRESS';
+   ```
 
-- **Second member:**
-  ```javascript
-  web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xf652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d41", console.log)
-  web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xf652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d42", console.log)
-  ```
-
-- **Slot 7: empty**
-  ```javascript
-  calculateMappingLocation(7, 1)
-  web3.utils.numberToHex("81222191986226809103279119994707868322855741819905904417953092666699096963112")
-  web3.utils.soliditySha3({ type: "uint", value: 1 }, { type: "uint", value: 7 })
-  ```
-
-- **Member 1:**
-  ```javascript
-  web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xb39221ace053465ec3453ce2b36430bd138b997ecea25c1043da0c366812b828", console.log)
-  web3.eth.getStorageAt("0x534E4Ce0ffF779513793cfd70308AF195827BD31", "0xb39221ace053465ec3453ce2b36430bd138b997ecea25c1043da0c366812b829", console.log)
-  ```
-
-Note: Use `web3.toAscii` to convert `bytes32` to readable text.
-
-## Conclusion
-
-This example demonstrates how data is stored in Solidity smart contracts and how to access this data directly via storage slots. Understanding these concepts is crucial for developing secure and efficient smart contracts.
+### Usage
+1. Open `UsingWeb3.html` in a web browser to interact with the contract using Web3.js.
+2. Open `UsingEtherJs.html` in a web browser to interact with the contract using Ethers.js.
+3. Click the "Read Storage" button to fetch and log the storage values from the contract.
 
 ## Author
+Yaghoub Adelzadeh
 
-- **Yaghoub Adelzadeh**
-- **GitHub**: [dappteacher](https://www.github.com/dappteacher)
+GitHub: [dappteacher](https://github.com/dappteacher)
 
 ## License
-
-This project is licensed under the MIT License.
-```
-
-This README provides a comprehensive overview of the contract, its purpose, and how to interact with it. It explains the storage layout and how to retrieve data from specific storage slots, making it useful for educational purposes or as a reference for understanding Solidity storage mechanics.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
